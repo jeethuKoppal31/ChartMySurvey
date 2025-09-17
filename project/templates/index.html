@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChartMySurvey</title>
+    <!-- Favicon -->
+    {% comment %} <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}"> {% endcomment %}
+    <!-- Core CSS -->
+    <link href="{% static 'assets/libs/chartist/dist/chartist.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/extra-libs/c3/c3.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css' %}" rel="stylesheet" />
+    <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
+
+    <style>
+        .card-custom {
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            transition: 0.3s ease-in-out;
+        }
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.12);
+        }
+        .upload-section {
+            background: linear-gradient(135deg, #2C3E50 0%, #4CAF50 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .upload-section label {
+            font-weight: bold;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 15px;
+            font-size: 14px;
+        }
+        .page-title {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+
+    <!-- Main wrapper -->
+    {% comment %} <div id="main-wrapper"> {% endcomment %}
+        
+        <!-- Topbar -->
+        
+              {% comment %} <header class="topbar">
+  <nav class="navbar top-navbar navbar-expand-md navbar-dark bg-dark shadow">
+    <ul class="navbar-nav ml-auto"> <!-- pushes nav items to right -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           Logout {{ request.user.username }}
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated fadeIn"
+             aria-labelledby="navbarDropdown">
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item text-danger font-weight-bold" href="{% url 'logout' %}"
+             onclick="return confirm('Are you sure you want to log out?');">
+             <i class="fa fa-power-off"></i> Logout
+          </a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header> {% endcomment %}
+<header class="topbar">
+  <nav class="navbar navbar-expand-md navbar-dark shadow" style="background: linear-gradient(90deg, #2C3E50, #4CAF50);">
+    
+    <!-- Brand / Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+      <h2 class="m-0" style="color: white; font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: 2px;">
+        <span style="color:#FFF;">ChartMySurvey</span>
+      </h2>
+    </a>
+
+    <!-- Navbar toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Right side menu -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+
+        {% comment %} <!-- Upload Another File -->
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{% url 'index' %}">
+            <i class="mdi mdi-upload"></i> <span style="color:#2C3E50; font-family: 'Poppins', sans-serif">Upload Another File</span>
+          </a>
+        </li> {% endcomment %}
+
+        <!-- Logout dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="navbarDropdown"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <i class="fa fa-user-circle"></i> <span style="color:#2C3E50;">{{ request.user.username }}</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right shadow animated fadeIn" aria-labelledby="navbarDropdown">
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-danger font-weight-bold" href="{% url 'logout' %}"
+               onclick="return confirm('Are you sure you want to log out?');">
+               <i class="fa fa-power-off"></i> Logout
+            </a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+</header>
+
+
+
+
+
+          
+
+        <!-- Page wrapper -->
+        <div class="page-wrapper">
+            <!-- Breadcrumb -->
+            <div class="page-breadcrumb">
+                <div class="row align-items-center">
+                    {% comment %} <div class="col-6">
+                        <h4 class="page-title text-dark">Dashboard</h4>
+                    </div>
+                    <div class="col-6 text-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+
+            <!-- Container -->
+            <div class="container-fluid">
+                <!-- Upload Section -->
+                <div class="card card-custom p-4">
+                    <div class="upload-section">
+                        <h4 class="mb-3"> Upload Excel File</h4>
+                        <form method="POST" enctype="multipart/form-data" action="{% url 'upload_excel' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="file" name="file" accept=".xls,.xlsx" required class="form-control-file bg-white p-2 rounded">
+                            </div>
+                            <button type="submit" class="btn btn-light btn-rounded mt-3">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            {% comment %} <footer class="footer text-center mt-5">
+                <span>© 2025 Nice Admin. Designed by <a href="https://wrappixel.com" target="_blank">WrapPixel</a>.</span>
+            </footer> {% endcomment %}
+        </div>
+    
+
+    <!-- Scripts -->
+    <script src="{% static 'assets/libs/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/libs/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/js/app.min.js' %}"></script>
+    <script src="{% static 'dist/js/app.init.js' %}"></script>
+    <script src="{% static 'dist/js/app-style-switcher.js' %}"></script>
+    <script src="{% static 'assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js' %}"></script>
+    <script src="{% static 'assets/extra-libs/sparkline/sparkline.js' %}"></script>
+    <script src="{% static 'dist/js/waves.js' %}"></script>
+    <script src="{% static 'dist/js/sidebarmenu.js' %}"></script>
+    <script src="{% static 'dist/js/custom.min.js' %}"></script>
+    <script src="{% static 'assets/libs/chartist/dist/chartist.min.js' %}"></script>
+    <script src="{% static 'assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
+    <script src="{% static 'assets/extra-libs/c3/d3.min.js' %}"></script>
+    <script src="{% static 'assets/extra-libs/c3/c3.min.js' %}"></script>
+    <script src="{% static 'assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js' %}"></script>
+    <script src="{% static 'assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js' %}"></script>
+    <script src="{% static 'dist/js/pages/dashboards/dashboard1.js' %}"></script>
+</body>
+</html>
+
